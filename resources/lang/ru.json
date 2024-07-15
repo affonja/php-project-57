@@ -1,0 +1,21 @@
+{
+  "Log in": "Войти",
+  "Password": "Пароль",
+  "Remember me": "Запомнить меня",
+  "Forgot your password?": "Забыли пароль?",
+  "Email Password Reset Link": "Сбросить пароль",
+  "Name": "Имя",
+  "Confirm Password": "Подтверждение",
+  "Already registered?": "Уже зарегистрированы?",
+  "Register": "Зарегистрировать",
+  "Statuses": "Статусы",
+  "Create status": "Создать статус",
+  "Date of creation": "Дата создания",
+  "Action": "Действия",
+  "Create": "Создать",
+  "Change of status": "Изменение статуса",
+  "Update": "Обновить",
+  "Change": "Изменить",
+  "Delete": "Удалить",
+  "The name has already been taken.": "Статус с таким именем уже существует"
+}

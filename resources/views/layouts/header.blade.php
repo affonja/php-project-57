@@ -20,10 +20,7 @@
                     <div>{{ Auth::user()->name }}</div>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
-                        <button id="logoutButton" type="submit"
-                                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 ml-4 rounded">
-                            Выход
-                        </button>
+                        <x-primary-button type="submit" class="ml-4">Выход</x-primary-button>
                     </form>
                 @endauth
                 @guest
@@ -48,7 +45,7 @@
                             Задачи </a>
                     </li>
                     <li>
-                        <a href="/"
+                        <a href="{{ route('task_statuses.index') }}"
                            class="block py-2 pl-3 pr-4 text-gray-700 hover:text-blue-700 lg:p-0">
                             Статусы </a>
                     </li>

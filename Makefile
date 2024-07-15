@@ -21,3 +21,9 @@ lint:
 
 lint-fix:
 	composer exec --verbose phpcbf
+
+ide-helper:
+	php artisan ide-helper:eloquent
+	php artisan ide-helper:gen
+	php artisan ide-helper:meta
+	php artisan ide-helper:mod -n

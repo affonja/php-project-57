@@ -3,8 +3,12 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+
+use function Laravel\Prompts\table;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,9 +19,16 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+//        User::factory()->create([
+//            'name' => 'Test User',
+//            'email' => 'test@example.com',
+//        ]);
+
+        DB::table('task_statuses')->insert([
+            ['name' => 'новый'],
+            ['name' => 'в работе'],
+            ['name' => 'на тестировании'],
+            ['name' => 'завершен'],
         ]);
     }
 }
