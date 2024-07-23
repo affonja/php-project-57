@@ -15,14 +15,20 @@
         @auth
             <x-table
                     :headers="['ID', __('Name'), __('Date of creation'), __('Action')]"
-                    :taskStatuses="$taskStatuses"
-            ></x-table>
+                    :items="$taskStatuses"
+                    :routes="['delete'=> 'task_statuses.destroy',
+                               'edit'=> 'task_statuses.edit']"
+                    :fields="['id', 'name', 'created_at', 'action']">
+                >
+            </x-table>
         @endauth
         @guest
             <x-table
                     :headers="['ID', __('Name'), __('Date of creation')]"
-                    :taskStatuses="$taskStatuses"
-            ></x-table>
+                    :items="$taskStatuses"
+                    :fields="['id', 'name', 'created_at']">
+                >
+            </x-table>
         @endguest
     </div>
 @endsection

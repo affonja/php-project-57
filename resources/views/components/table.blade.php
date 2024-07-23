@@ -1,5 +1,4 @@
-@props(['headers'])
-@props(['taskStatuses'])
+@props(['headers', 'items', 'routes', 'fields'])
 
 <table {{ $attributes->merge(['class' => 'mt-5']) }}>
     <thead class="border-b-2 border-solid border-black text-left">
@@ -12,26 +11,27 @@
     </tr>
     </thead>
     <tbody class="bg-white divide-y divide-gray-200">
-    @foreach($taskStatuses as $status)
+    @foreach($items as $item)
         <tr class="border-b border-dashed text-left">
-            <td>{{ $status->id }}</td>
-            <td>{{ $status->name }}</td>
-            <td>{{ $status->created_at->format('d.m.Y') }}</td>
-            @auth
+            @foreach($fields as $value)
                 <td>
-                    <a href="{{ route('task_statuses.destroy', $status) }}"
-                       class="text-red-600 mr-4"
-                       data-confirm="Вы уверены?"
-                       data-method="delete"
-                       rel="nofollow">{{ __('Delete') }}
-                    </a>
-                    <a href="{{ route('task_statuses.edit', $status) }}"
-                       class="text-blue-600"
-                       data-method="get"
-                       rel="nofollow">{{ __('Change') }}
-                    </a>
+                    @switch($value)
+                        @case('created_at')
+                            {{ $item->$value->format('d.m.Y') }}
+                            @break
+                        @case('action')
+                            @foreach($routes as $key => $route)
+                                <x-link-table :item="$item" :route="$route" :name="$key"/>
+                            @endforeach
+                            @break
+                        @default
+                            {{ $item->$value }}
+                    @endswitch
                 </td>
-        @endauth
+            @endforeach
+        </tr>
     @endforeach
     </tbody>
 </table>
+
+

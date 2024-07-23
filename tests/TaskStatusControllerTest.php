@@ -70,9 +70,9 @@ class TaskStatusControllerTest extends TestCase
 
     public function testStore()
     {
-        $taskStatusName = fake()->word;
-        $response = $this->post('/task_statuses', ['name' => $taskStatusName]);
-        $this->assertDatabaseHas('task_statuses', ['name' => $taskStatusName]);
+        $taskStatus = TaskStatus::factory()->make();
+        $response = $this->post('/task_statuses', ['name' => $taskStatus->name]);
+        $this->assertDatabaseHas('task_statuses', ['name' => $taskStatus->name]);
         $response->assertRedirectToRoute('task_statuses.index');
     }
 
@@ -82,16 +82,16 @@ class TaskStatusControllerTest extends TestCase
 
         $response = $this->patch("/task_statuses/{$this->taskStatus->id}", $updatedData);
 
-        $response->assertRedirect('/task_statuses');
         $this->assertDatabaseHas('task_statuses', $updatedData);
+        $response->assertRedirect('/task_statuses');
     }
 
     public function testDestroy()
     {
         $response = $this->delete("/task_statuses/{$this->taskStatus->id}");
 
-        $response->assertRedirect('/task_statuses');
         $this->assertDatabaseMissing('task_statuses', ['id' => $this->taskStatus->id]);
+        $response->assertRedirect('/task_statuses');
     }
 
     public function testValidate()
