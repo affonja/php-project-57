@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 use App\Models\Task;
 use App\Models\User;
+use App\Models\TaskStatus;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 
@@ -18,8 +19,9 @@ class TaskControllerTest extends TestCase
     {
         parent::setUp();
 
-        $user = User::factory()->create();
-        $this->actingAs($user);
+        $users = User::factory()->count(5)->create();
+        $taskStatuses = TaskStatus::factory()->count(5)->create();
+        $this->actingAs($users->random());
         $this->task = Task::factory()->create();
     }
 
@@ -40,10 +42,9 @@ class TaskControllerTest extends TestCase
         $response->assertStatus($code);
         if ($path === '/tasks') {
             $response->assertViewIs($view);
-            $response->assertViewHas('taskStatuses');
+            $response->assertViewHas('tasks');
         }
     }
-
 
     public function testIndex()
     {

@@ -1,6 +1,6 @@
 @props(['headers', 'items', 'routes', 'fields'])
 
-<table {{ $attributes->merge(['class' => 'mt-5']) }}>
+<table {{ $attributes->merge(['class' => 'mt-5 w-full']) }}>
     <thead class="border-b-2 border-solid border-black text-left">
     <tr>
         @foreach($headers as $header)
