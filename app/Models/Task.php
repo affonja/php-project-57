@@ -36,7 +36,7 @@ class Task extends Model
 
     public function executor()
     {
-        return $this->belongsTo(User::class, 'assigned_to_id');
+        return $this->belongsTo(User::class, 'assigned_to_id')->withDefault();
     }
 
     public function getExecutorNameAttribute()

@@ -21,7 +21,11 @@
                             @break
                         @case('action')
                             @foreach($routes as $key => $route)
-                                <x-link-table :item="$item" :route="$route" :name="$key"/>
+                                @if($item instanceof \App\Models\Task)
+                                    <x-task-link-table :item="$item" :route="$route" :name="$key"/>
+                                @else
+                                    <x-link-table :item="$item" :route="$route" :name="$key"/>
+                                @endif
                             @endforeach
                             @break
                         @default

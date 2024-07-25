@@ -18,7 +18,7 @@ return new class extends Migration {
 
             $table->foreignId('status_id')->constrained('task_statuses')->onDelete('restrict');
             $table->foreignId('created_by_id')->constrained('users');
-            $table->foreignId('assigned_to_id')->constrained('users');
+            $table->foreignId('assigned_to_id')->nullable()->constrained('users');
         });
     }
 

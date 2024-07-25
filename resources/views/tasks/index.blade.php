@@ -42,12 +42,19 @@
 
         {{--таблица--}}
 
-
+        @auth
+            <div>
+                <form action="{{ route('tasks.create') }}" method="get">
+                    @csrf
+                    <x-primary-button type="submit">{{ __('Create task') }}</x-primary-button>
+                </form>
+            </div>
+        @endauth
         @auth
             <x-table
                     :headers="['ID', __('Status'), __('Name'), __('Author'), __('Executor'),__('Date of creation'), __('Action')]"
                     :items="$tasks"
-                    :routes="['edit'=> 'tasks.edit']"
+                    :routes="['update'=> 'tasks.edit', 'delete' => 'tasks.destroy']"
                     :fields="['id', 'status_name','name', 'author_name', 'executor_name', 'created_at', 'action']">
                 >
             </x-table>

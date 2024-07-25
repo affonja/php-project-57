@@ -7,7 +7,9 @@ use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
+use function Laravel\Prompts\password;
 use function Laravel\Prompts\table;
 
 class DatabaseSeeder extends Seeder
@@ -19,10 +21,17 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-//        User::factory()->create([
-//            'name' => 'Test User',
-//            'email' => 'test@example.com',
-//        ]);
+        User::factory()->create([
+            'name' => 'user1',
+            'email' => 'user@ma.il',
+        ]);
+
+        DB::table('users')->insert([
+            ['name' => 'user1', 'email' => 'u1@ma.il', 'password' => Hash::make('321654987')],
+            ['name' => 'user2', 'email' => 'u2@ma.il', 'password' => Hash::make('321654987')],
+            ['name' => 'user3', 'email' => 'u3@ma.il', 'password' => Hash::make('321654987')],
+            ['name' => 'user4', 'email' => 'u4@ma.il', 'password' => Hash::make('321654987')],
+        ]);
 
         DB::table('task_statuses')->insert([
             ['name' => 'новый'],

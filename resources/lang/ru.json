@@ -24,5 +24,8 @@
   "Sign up": "Регистрация",
   "Status": "Статус",
   "Author": "Автор",
-  "Executor": "Исполнитель"
+  "Executor": "Исполнитель",
+  "Create task": "Создать задачу",
+  "Description": "Описание",
+  "Change of task": "Изменение задачи"
 }
