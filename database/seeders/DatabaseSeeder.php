@@ -19,25 +19,26 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        $now = now();
 
         User::factory()->create([
             'name' => 'user1',
             'email' => 'user@ma.il',
+            'created_at' => $now
         ]);
 
         DB::table('users')->insert([
-            ['name' => 'user1', 'email' => 'u1@ma.il', 'password' => Hash::make('321654987')],
-            ['name' => 'user2', 'email' => 'u2@ma.il', 'password' => Hash::make('321654987')],
-            ['name' => 'user3', 'email' => 'u3@ma.il', 'password' => Hash::make('321654987')],
-            ['name' => 'user4', 'email' => 'u4@ma.il', 'password' => Hash::make('321654987')],
+            ['name' => 'user1', 'email' => 'u1@ma.il', 'password' => Hash::make('321654987'), 'created_at' => $now],
+            ['name' => 'user2', 'email' => 'u2@ma.il', 'password' => Hash::make('321654987'), 'created_at' => $now],
+            ['name' => 'user3', 'email' => 'u3@ma.il', 'password' => Hash::make('321654987'), 'created_at' => $now],
+            ['name' => 'user4', 'email' => 'u4@ma.il', 'password' => Hash::make('321654987'), 'created_at' => $now],
         ]);
 
         DB::table('task_statuses')->insert([
-            ['name' => 'новый'],
-            ['name' => 'в работе'],
-            ['name' => 'на тестировании'],
-            ['name' => 'завершен'],
+            ['name' => 'новый', 'created_at' => $now],
+            ['name' => 'в работе', 'created_at' => $now],
+            ['name' => 'на тестировании', 'created_at' => $now],
+            ['name' => 'завершен', 'created_at' => $now],
         ]);
     }
 }

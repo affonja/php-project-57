@@ -28,6 +28,16 @@
                                 @endif
                             @endforeach
                             @break
+                        @case('name')
+                            @if($item instanceof \App\Models\Task)
+                                <a class="text-blue-600 hover:text-blue-900"
+                                   href="{{ route('tasks.show', $item->id) }}">
+                                    {{ $item->$value }}
+                                </a>
+                                @break
+                            @endif
+                            {{ $item->$value }}
+                            @break
                         @default
                             {{ $item->$value }}
                     @endswitch

@@ -27,10 +27,10 @@ Route::resource('task_statuses', TaskStatusController::class)->only('index');
 Route::resource('task_statuses', TaskStatusController::class)
     ->middleware('auth')->except('index');
 
-Route::resource('tasks', TaskController::class)->only('index');
 Route::resource('tasks', TaskController::class)
     ->middleware(['auth', 'can:delete,task'])->only('delete');
 Route::resource('tasks', TaskController::class)
-    ->middleware('auth')->except('index', 'delete');
+    ->middleware('auth')->except('index', 'show');
+Route::resource('tasks', TaskController::class)->only('index', 'show');
 
 require __DIR__.'/auth.php';
