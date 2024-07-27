@@ -35,3 +35,26 @@ div.alert {
     border: 1px solid transparent;
     border-radius: 4px;
 }
+
+.btn-primary {
+    background: rgb(59, 130, 246);
+    color: #fff;
+    font-weight: 700;
+    padding: .5rem 1rem;
+    border-radius: .25rem;
+}
+
+.btn-primary:hover {
+    background: rgb(29, 78, 216);
+}
+
+select, textarea, input[type="text"] {
+    border-color: rgb(209 213 219);
+    border-radius: .25rem;
+}
+
+select:focus,
+textarea:focus,
+input[type="text"]:focus {
+    border-color: rgb(99, 102, 241);
+}

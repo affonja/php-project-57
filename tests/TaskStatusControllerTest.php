@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use App\Models\Task;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -37,7 +38,7 @@ class TaskStatusControllerTest extends TestCase
         auth()->logout();
         $response = $this->get($path);
         $response->assertStatus($code);
-        if ($path === '/task_statuses') {
+        if ($view) {
             $response->assertViewIs($view);
             $response->assertViewHas('taskStatuses');
         }
@@ -72,6 +73,7 @@ class TaskStatusControllerTest extends TestCase
     {
         $taskStatus = TaskStatus::factory()->make();
         $response = $this->post('/task_statuses', ['name' => $taskStatus->name]);
+
         $this->assertDatabaseHas('task_statuses', ['name' => $taskStatus->name]);
         $response->assertRedirectToRoute('task_statuses.index');
     }
@@ -82,24 +84,32 @@ class TaskStatusControllerTest extends TestCase
 
         $response = $this->patch("/task_statuses/{$this->taskStatus->id}", $updatedData);
 
-        $response->assertRedirect('/task_statuses');
         $this->assertDatabaseHas('task_statuses', $updatedData);
+        $response->assertRedirect('/task_statuses');
     }
 
     public function testDestroy()
     {
         $response = $this->delete("/task_statuses/{$this->taskStatus->id}");
 
-        $response->assertRedirect('/task_statuses');
         $this->assertDatabaseMissing('task_statuses', ['id' => $this->taskStatus->id]);
+        $response->assertRedirect('/task_statuses');
+    }
+
+    public function testDestroyTaskStatusInUse()
+    {
+        $task = Task::factory()->create(['status_id' => $this->taskStatus->id]);
+        $response = $this->delete("/task_statuses/{$this->taskStatus->id}");
+
+        $this->assertDatabaseHas('task_statuses', ['id' => $this->taskStatus->id]);
+        $response->assertRedirect('/task_statuses');
     }
 
     public function testValidate()
     {
         $validateProvider = [
             ['post', '/task_statuses', ['name' => $this->taskStatus->name]],
-            ['patch', "/task_statuses/{$this->taskStatus->id}", ['name' => $this->taskStatus->name]],
-//            ['delete', "/task_statuses/100", []],
+            ['patch', "/task_statuses/{$this->taskStatus->id}", ['name' => $this->taskStatus->name]]
         ];
 
         foreach ($validateProvider as [$method, $path, $param]) {
@@ -107,7 +117,7 @@ class TaskStatusControllerTest extends TestCase
             $response->assertStatus(302);
             $response->assertRedirect('/');
             $flashMessages = session('flash_notification');
-            $this->assertStringContainsString('Статус с таким именем уже существует', $flashMessages[0]['message']);
+            $this->assertStringContainsString('name с таким именем уже существует', $flashMessages[0]['message']);
         }
     }
 }

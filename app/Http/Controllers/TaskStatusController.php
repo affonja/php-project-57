@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\TaskStatusRequest;
 use App\Models\TaskStatus;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
-use Nette\Schema\ValidationException;
 
 class TaskStatusController extends Controller
 {
@@ -24,8 +22,7 @@ class TaskStatusController extends Controller
      */
     public function create()
     {
-        $taskStatus = new TaskStatus();
-        return view('taskStatuses.create', compact('taskStatus'));
+        return view('taskStatuses.create', ['taskStatus' => new TaskStatus()]);
     }
 
     /**
@@ -33,8 +30,7 @@ class TaskStatusController extends Controller
      */
     public function store(TaskStatusRequest $request)
     {
-        $taskStatus = new TaskStatus();
-        $this->saveTaskStatus($taskStatus, $request);
+        $this->saveTaskStatus(new TaskStatus(), $request);
         flash('Статус успешно создан')->success();
         return redirect()->route('task_statuses.index');
     }
@@ -73,13 +69,15 @@ class TaskStatusController extends Controller
         try {
             $taskStatus->delete();
             flash('Статус успешно удалён')->success();
-            return redirect()->route('task_statuses.index');
         } catch (\Exception $e) {
             flash('Не удалось удалить статус')->error();
-            return redirect()->back()->withInput();
         }
+        return redirect()->route('task_statuses.index');
     }
 
+    /**
+     * Save the task status to the database.
+     */
     private function saveTaskStatus(TaskStatus $taskStatus, TaskStatusRequest $request)
     {
         $validated = $request->validated();

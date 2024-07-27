@@ -5,24 +5,27 @@
 
         @auth
             <div>
-                <form action="{{ route('task_statuses.create') }}" method="get">
-                    @csrf
-                    <x-primary-button type="submit">{{ __('Create status') }}</x-primary-button>
-                </form>
+                <x-primary-a-button :route="route('task_statuses.create')" :method="'GET'" class="mt-4">
+                    {{ __('Create status') }}
+                </x-primary-a-button>
             </div>
-        @endauth
 
-        @auth
-            <x-table
+            <x-table.table
                     :headers="['ID', __('Name'), __('Date of creation'), __('Action')]"
-                    :taskStatuses="$taskStatuses"
-            ></x-table>
+                    :items="$taskStatuses"
+                    :routes="['delete'=> 'task_statuses.destroy',
+                               'update'=> 'task_statuses.edit']"
+                    :fields="['id', 'name', 'created_at', 'action']">
+                >
+            </x-table.table>
         @endauth
         @guest
-            <x-table
+            <x-table.table
                     :headers="['ID', __('Name'), __('Date of creation')]"
-                    :taskStatuses="$taskStatuses"
-            ></x-table>
+                    :items="$taskStatuses"
+                    :fields="['id', 'name', 'created_at']">
+                >
+            </x-table.table>
         @endguest
     </div>
 @endsection

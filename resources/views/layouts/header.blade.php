@@ -18,20 +18,17 @@
             <div class="flex items-center lg:order-2">
                 @auth
                     <div>{{ Auth::user()->name }}</div>
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <x-primary-button type="submit" class="ml-4">Выход</x-primary-button>
-                    </form>
+                    <x-primary-a-button :route="route('logout')" :method="'POST'" class="ml-4">
+                        {{ __('Sign out') }}
+                    </x-primary-a-button>
                 @endauth
                 @guest
-                    <a href="{{ route('login') }}"
-                       class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                        Вход
-                    </a>
-                    <a href="{{ route('register') }}"
-                       class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-2">
-                        Регистрация
-                    </a>
+                    <x-primary-a-button :route="route('login')" :method="'GET'" class="ml-4">
+                        {{ __('Sign in') }}
+                    </x-primary-a-button>
+                    <x-primary-a-button :route="route('register')" :method="'GET'" class="ml-4">
+                        {{ __('Sign up') }}
+                    </x-primary-a-button>
                 @endguest
 
 
@@ -40,19 +37,19 @@
             <div class="items-center justify-between hidden w-full lg:flex lg:w-auto lg:order-1">
                 <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
                     <li>
-                        <a href="/"
+                        <a href="{{ route('tasks.index') }}"
                            class="block py-2 pl-3 pr-4 text-gray-700 hover:text-blue-700 lg:p-0">
-                            Задачи </a>
+                            {{ __('Tasks') }} </a>
                     </li>
                     <li>
                         <a href="{{ route('task_statuses.index') }}"
                            class="block py-2 pl-3 pr-4 text-gray-700 hover:text-blue-700 lg:p-0">
-                            Статусы </a>
+                            {{ __('Statuses') }} </a>
                     </li>
                     <li>
                         <a href="/"
                            class="block py-2 pl-3 pr-4 text-gray-700 hover:text-blue-700 lg:p-0">
-                            Метки </a>
+                            {{ __('Label') }} </a>
                     </li>
                 </ul>
             </div>

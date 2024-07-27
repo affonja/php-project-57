@@ -17,5 +17,19 @@
   "Update": "Обновить",
   "Change": "Изменить",
   "Delete": "Удалить",
-  "The name has already been taken.": "Статус с таким именем уже существует"
+  "The name has already been taken.": "Статус с таким именем уже существует",
+  "Tasks": "Задачи",
+  "Label": "Метки",
+  "Sign in": "Вход",
+  "Sign up": "Регистрация",
+  "Sign out": "Выход",
+  "Status": "Статус",
+  "Author": "Автор",
+  "Executor": "Исполнитель",
+  "Create task": "Создать задачу",
+  "Description": "Описание",
+  "Change of task": "Изменение задачи",
+  "Apply": "Применить",
+  "Reset": "Сбросить",
+  "Tags": "Метки"
 }
