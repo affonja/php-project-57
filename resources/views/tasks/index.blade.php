@@ -5,32 +5,30 @@
         <x-h1>{{ __('Tasks') }}</x-h1>
 
         <div class="w-full flex justify-between">
-            <x-filter-form :task="$task" :taskStatuses="$taskStatuses" :users="$users" :filters="$filters"/>
+            @include('tasks.filter-form')
             @auth
-                <div>
-                    {{ html()->modelForm($task, 'GET', route('tasks.create'))->open() }}
-                    {{ html()->submit( __('Create task'))->class('bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded') }}
-                    {{ html()->closeModelForm() }}
+                <div class="flex">
+                    <x-primary-a-button :route="route('tasks.create')" :method="'GET'">
+                        {{ __('Create task') }}
+                    </x-primary-a-button>
                 </div>
             @endauth
         </div>
 
         @auth
-            <x-table
+            <x-table.table
                     :headers="['ID', __('Status'), __('Name'), __('Author'), __('Executor'),__('Date of creation'), __('Action')]"
                     :items="$tasks"
                     :routes="['update'=> 'tasks.edit', 'delete' => 'tasks.destroy']"
                     :fields="['id', 'status_name','name', 'author_name', 'executor_name', 'created_at', 'action']">
-                >
-            </x-table>
+            </x-table.table>
         @endauth
         @guest
-            <x-table
+            <x-table.table
                     :headers="['ID', __('Status'), __('Name'), __('Author'), __('Executor'),__('Date of creation')]"
                     :items="$tasks"
                     :fields="['id', 'status_name', 'name', 'author_name', 'executor_name', 'created_at']">
-                >
-            </x-table>
+            </x-table.table>
         @endguest
 
         <div class="mt-10">

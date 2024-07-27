@@ -5,29 +5,27 @@
 
         @auth
             <div>
-                {{ html()->modelForm($taskStatuses, 'GET', route('task_statuses.create'))->open() }}
-                {{ html()->submit( __('Create status'))->class('bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded') }}
-                {{ html()->closeModelForm() }}
+                <x-primary-a-button :route="route('task_statuses.create')" :method="'GET'" class="mt-4">
+                    {{ __('Create status') }}
+                </x-primary-a-button>
             </div>
-        @endauth
 
-        @auth
-            <x-table
+            <x-table.table
                     :headers="['ID', __('Name'), __('Date of creation'), __('Action')]"
                     :items="$taskStatuses"
                     :routes="['delete'=> 'task_statuses.destroy',
-                               'edit'=> 'task_statuses.edit']"
+                               'update'=> 'task_statuses.edit']"
                     :fields="['id', 'name', 'created_at', 'action']">
                 >
-            </x-table>
+            </x-table.table>
         @endauth
         @guest
-            <x-table
+            <x-table.table
                     :headers="['ID', __('Name'), __('Date of creation')]"
                     :items="$taskStatuses"
                     :fields="['id', 'name', 'created_at']">
                 >
-            </x-table>
+            </x-table.table>
         @endguest
     </div>
 @endsection

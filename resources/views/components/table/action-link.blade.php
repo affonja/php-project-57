@@ -16,19 +16,7 @@
     ];
 @endphp
 
-@if($name === 'delete')
-    @can('delete', $item)
-        <a {{ $attributes->merge(['class' => $styles[$name]['class']]) }}
-           href="{{ route($route, $item) }}"
-           @isset($styles[$name]['confirm'])
-               data-confirm="{{ $styles[$name]['confirm'] }}"
-           @endisset
-           data-method="{{ $styles[$name]['method']}}"
-           rel="nofollow">
-            {{ __($styles[$name]['text'] ) }}
-        </a>
-    @endcan
-@else
+@can($name, $item)
     <a {{ $attributes->merge(['class' => $styles[$name]['class']]) }}
        href="{{ route($route, $item) }}"
        @isset($styles[$name]['confirm'])
@@ -38,6 +26,4 @@
        rel="nofollow">
         {{ __($styles[$name]['text'] ) }}
     </a>
-@endif
-
-
+@endcan

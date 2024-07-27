@@ -18,20 +18,17 @@
             <div class="flex items-center lg:order-2">
                 @auth
                     <div>{{ Auth::user()->name }}</div>
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <x-primary-button type="submit" class="ml-4">Выход</x-primary-button>
-                    </form>
+                    <x-primary-a-button :route="route('logout')" :method="'POST'" class="ml-4">
+                        {{ __('Sign out') }}
+                    </x-primary-a-button>
                 @endauth
                 @guest
-                    <a href="{{ route('login') }}"
-                       class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    <x-primary-a-button :route="route('login')" :method="'GET'" class="ml-4">
                         {{ __('Sign in') }}
-                    </a>
-                    <a href="{{ route('register') }}"
-                       class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-2">
+                    </x-primary-a-button>
+                    <x-primary-a-button :route="route('register')" :method="'GET'" class="ml-4">
                         {{ __('Sign up') }}
-                    </a>
+                    </x-primary-a-button>
                 @endguest
 
 

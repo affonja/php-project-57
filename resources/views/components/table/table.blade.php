@@ -21,11 +21,7 @@
                             @break
                         @case('action')
                             @foreach($routes as $key => $route)
-                                @if($item instanceof \App\Models\Task)
-                                    <x-task-link-table :item="$item" :route="$route" :name="$key"/>
-                                @else
-                                    <x-link-table :item="$item" :route="$route" :name="$key"/>
-                                @endif
+                                <x-table.action-link :item="$item" :route="$route" :name="$key"/>
                             @endforeach
                             @break
                         @case('name')
@@ -34,9 +30,9 @@
                                    href="{{ route('tasks.show', $item->id) }}">
                                     {{ $item->$value }}
                                 </a>
-                                @break
+                            @else
+                                {{ $item->$value }}
                             @endif
-                            {{ $item->$value }}
                             @break
                         @default
                             {{ $item->$value }}
