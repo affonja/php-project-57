@@ -14,12 +14,23 @@ class TaskController extends Controller
     /**
      * Display a listing of the resource.
      */
-
-    public function index()
+    public function index(Request $request)
     {
-        $tasks = Task::paginate(15);
-        return view('tasks.index', compact('tasks'));
+        $filters = $request->input('filter', []);
+
+        $tasks = Task::query()
+            ->filterByStatus($filters['status_id'] ?? null)
+            ->filterByCreatedBy($filters['created_by_id'] ?? null)
+            ->filterByAssignedTo($filters['assigned_to_id'] ?? null)
+            ->paginate(15);
+
+        $taskStatuses = TaskStatus::all();
+        $users = User::all();
+        $task = new Task();
+
+        return view('tasks.index', compact('task', 'tasks', 'taskStatuses', 'users', 'filters'));
     }
+
 
     /**
      * Show the form for creating a new resource.

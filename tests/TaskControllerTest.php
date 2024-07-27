@@ -105,7 +105,7 @@ class TaskControllerTest extends TestCase
         $response->assertRedirectToRoute('tasks.index');
     }
 
-    public function testDestroyUnowner()
+    public function testDestroyNotOwner()
     {
         $newUser = User::factory()->create();
         $response = $this->actingAs($newUser)->delete("/tasks/{$this->task->id}");

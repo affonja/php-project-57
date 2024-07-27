@@ -31,14 +31,4 @@ class TaskRequest extends FormRequest
         ];
     }
 
-//    protected function failedValidation(Validator $validator)
-//    {
-//        $errors = $validator->errors()->all();
-//        $errorMessage = implode(' ', $errors);
-//        flash($errorMessage)->error();
-//
-//        throw new HttpResponseException(
-//            redirect()->back()->withInput()
-//        );
-//    }
 }

@@ -50,4 +50,28 @@ class Task extends Model
             $query->with(['author', 'status', 'executor']);
         });
     }
+
+    public function scopeFilterByStatus($query, $statusId)
+    {
+        if (!empty($statusId)) {
+            return $query->where('status_id', $statusId);
+        }
+        return $query;
+    }
+
+    public function scopeFilterByCreatedBy($query, $createdById)
+    {
+        if (!empty($createdById)) {
+            return $query->where('created_by_id', $createdById);
+        }
+        return $query;
+    }
+
+    public function scopeFilterByAssignedTo($query, $assignedToId)
+    {
+        if (!empty($assignedToId)) {
+            return $query->where('assigned_to_id', $assignedToId);
+        }
+        return $query;
+    }
 }

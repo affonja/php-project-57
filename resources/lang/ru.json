@@ -27,5 +27,7 @@
   "Executor": "Исполнитель",
   "Create task": "Создать задачу",
   "Description": "Описание",
-  "Change of task": "Изменение задачи"
+  "Change of task": "Изменение задачи",
+  "Apply": "Применить",
+  "Reset": "Сбросить"
 }
