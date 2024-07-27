@@ -11,6 +11,15 @@ use App\Models\User;
 
 class TaskController extends Controller
 {
+    protected $taskStatuses;
+    protected $users;
+
+    public function __construct()
+    {
+        $this->taskStatuses = TaskStatus::all();
+        $this->users = User::all();
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -24,23 +33,25 @@ class TaskController extends Controller
             ->filterByAssignedTo($filters['assigned_to_id'] ?? null)
             ->paginate(15);
 
-        $taskStatuses = TaskStatus::all();
-        $users = User::all();
-        $task = new Task();
-
-        return view('tasks.index', compact('task', 'tasks', 'taskStatuses', 'users', 'filters'));
+        return view('tasks.index', [
+            'task' => new Task(),
+            'tasks' => $tasks,
+            'taskStatuses' => $this->taskStatuses,
+            'users' => $this->users,
+            'filters' => $filters,
+        ]);
     }
-
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        $task = new Task();
-        $taskStatuses = TaskStatus::all();
-        $users = User::all();
-        return view('tasks.create', compact('task', 'taskStatuses', 'users'));
+        return view('tasks.create', [
+            'task' => new Task(),
+            'taskStatuses' => $this->taskStatuses,
+            'users' => $this->users,
+        ]);
     }
 
     /**
@@ -48,11 +59,7 @@ class TaskController extends Controller
      */
     public function store(TaskRequest $request)
     {
-        $validated = $request->validated();
-        $task = new Task();
-        $task->fill($validated);
-        $task->created_by_id = auth()->id();
-        $task->save();
+        $this->saveTask(new Task(), $request, auth()->id());
         flash('Задача успешно создана')->success();
         return redirect()->route('tasks.index');
     }
@@ -62,7 +69,7 @@ class TaskController extends Controller
      */
     public function show(string $id)
     {
-        $task = Task::find($id);
+        $task = Task::findOrFail($id);
         return view('tasks.show', compact('task'));
     }
 
@@ -71,21 +78,19 @@ class TaskController extends Controller
      */
     public function edit(string $id)
     {
-        $task = Task::findOrFail($id);
-        $taskStatuses = TaskStatus::all();
-        $users = User::all();
-        return view('tasks.edit', compact('task', 'taskStatuses', 'users'));
+        return view('tasks.edit', [
+            'task' => Task::findOrFail($id),
+            'taskStatuses' => $this->taskStatuses,
+            'users' => $this->users,
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(TaskRequest $request, string $id)
+    public function update(TaskRequest $request, Task $task)
     {
-        $task = Task::find($id);
-        $validated = $request->validated();
-        $task->fill($validated);
-        $task->save();
+        $this->saveTask($task, $request);
         flash('Задача успешно обновлена')->success();
         return redirect()->route('tasks.index');
     }
@@ -98,10 +103,21 @@ class TaskController extends Controller
         try {
             $task->delete();
             flash('Задача успешно удалёна')->success();
-            return redirect()->route('tasks.index');
         } catch (\Exception $e) {
             flash('Не удалось удалить задачу')->error();
-            return redirect()->back()->withInput();
         }
+
+        return redirect()->route('tasks.index');
+    }
+
+    /**
+     * Save the task to the database.
+     */
+    private function saveTask(Task $task, TaskRequest $request, $author_id = null)
+    {
+        $validated = $request->validated();
+        $task->fill($validated);
+        $author_id === null ?: $task->created_by_id = $author_id;
+        $task->save();
     }
 }

@@ -5,10 +5,9 @@
 
         @auth
             <div>
-                <form action="{{ route('task_statuses.create') }}" method="get">
-                    @csrf
-                    <x-primary-button type="submit">{{ __('Create status') }}</x-primary-button>
-                </form>
+                {{ html()->modelForm($taskStatuses, 'GET', route('task_statuses.create'))->open() }}
+                {{ html()->submit( __('Create status'))->class('bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded') }}
+                {{ html()->closeModelForm() }}
             </div>
         @endauth
 
