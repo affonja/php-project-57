@@ -38,7 +38,13 @@ class DatabaseSeeder extends Seeder
             ['name' => 'завершен', 'created_at' => $now],
         ]);
 
+        DB::table('labels')->insert([
+            ['name' => 'ошибка', 'description' => 'Какая-то ошибка в коде', 'created_at' => $now],
+            ['name' => 'документация', 'description' => 'Задача которая касается документации', 'created_at' => $now],
+            ['name' => 'дубликат', 'description' => 'Повтор другой задачи', 'created_at' => $now],
+            ['name' => 'доработка', 'description' => 'Новая фича', 'created_at' => $now],
+        ]);
+
         Task::factory()->count(20)->create();
-        Label::factory()->count(5)->create();
     }
 }
