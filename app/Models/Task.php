@@ -44,6 +44,11 @@ class Task extends Model
         return $this->executor->name;
     }
 
+    public function labels()
+    {
+        return $this->belongsToMany(Label::class);
+    }
+
     protected static function booted()
     {
         static::addGlobalScope('withRelations', function ($query) {

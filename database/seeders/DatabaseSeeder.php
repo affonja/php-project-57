@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Label;
+use App\Models\Task;
 use App\Models\User;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -21,17 +23,12 @@ class DatabaseSeeder extends Seeder
     {
         $now = now();
 
-        User::factory()->create([
-            'name' => 'user1',
-            'email' => 'user@ma.il',
-            'created_at' => $now
-        ]);
-
         DB::table('users')->insert([
             ['name' => 'user1', 'email' => 'u1@ma.il', 'password' => Hash::make('321654987'), 'created_at' => $now],
             ['name' => 'user2', 'email' => 'u2@ma.il', 'password' => Hash::make('321654987'), 'created_at' => $now],
             ['name' => 'user3', 'email' => 'u3@ma.il', 'password' => Hash::make('321654987'), 'created_at' => $now],
             ['name' => 'user4', 'email' => 'u4@ma.il', 'password' => Hash::make('321654987'), 'created_at' => $now],
+            ['name' => 'user5', 'email' => 'u5@ma.il', 'password' => Hash::make('321654987'), 'created_at' => $now],
         ]);
 
         DB::table('task_statuses')->insert([
@@ -40,5 +37,8 @@ class DatabaseSeeder extends Seeder
             ['name' => 'на тестировании', 'created_at' => $now],
             ['name' => 'завершен', 'created_at' => $now],
         ]);
+
+        Task::factory()->count(20)->create();
+        Label::factory()->count(5)->create();
     }
 }
