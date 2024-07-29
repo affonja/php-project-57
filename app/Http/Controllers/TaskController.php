@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\TaskRequest;
+use App\Models\Label;
 use Illuminate\Http\Request;
 use App\Models\TaskStatus;
 use App\Models\Task;
@@ -13,11 +14,13 @@ class TaskController extends Controller
 {
     protected $taskStatuses;
     protected $users;
+    protected $labels;
 
     public function __construct()
     {
         $this->taskStatuses = TaskStatus::all();
         $this->users = User::all();
+        $this->labels = Label::all();
     }
 
     /**
@@ -51,6 +54,7 @@ class TaskController extends Controller
             'task' => new Task(),
             'taskStatuses' => $this->taskStatuses,
             'users' => $this->users,
+            'labels' => $this->labels
         ]);
     }
 
@@ -82,6 +86,7 @@ class TaskController extends Controller
             'task' => Task::findOrFail($id),
             'taskStatuses' => $this->taskStatuses,
             'users' => $this->users,
+            'labels' => $this->labels
         ]);
     }
 
@@ -119,5 +124,9 @@ class TaskController extends Controller
         $task->fill($validated);
         $author_id === null ?: $task->created_by_id = $author_id;
         $task->save();
+
+        if (isset($validated['labels'])) {
+            $task->labels()->sync($validated['labels']);
+        }
     }
 }

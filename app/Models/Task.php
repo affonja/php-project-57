@@ -49,6 +49,7 @@ class Task extends Model
         return $this->belongsToMany(Label::class);
     }
 
+
     protected static function booted()
     {
         static::addGlobalScope('withRelations', function ($query) {

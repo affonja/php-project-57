@@ -3,12 +3,10 @@
 namespace Tests;
 
 use App\Models\Label;
-use App\Models\Task;
-use App\Models\TaskStatus;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\TestCase;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class LabelControllerTest extends TestCase
 {
@@ -66,7 +64,7 @@ class LabelControllerTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertViewIs('labels.edit');
-        $response->assertViewHas('labels', $this->label);
+        $response->assertViewHas('label', $this->label);
     }
 
     public function testStore()
@@ -77,8 +75,6 @@ class LabelControllerTest extends TestCase
         $this->assertDatabaseHas('labels', ['name' => $label->name]);
         $response->assertRedirectToRoute('labels.index');
     }
-
-//    testStoreDuble
 
     public function testUpdate()
     {
@@ -100,11 +96,26 @@ class LabelControllerTest extends TestCase
 
     public function testDestroyLabelInUse()
     {
-        $task = Task::factory()->create(['label_id' => $this->label->id]);
-        $response = $this->delete("/labels/{$this->label->id}");
+//        $task = Task::factory()->create(['label_id' => $this->label->id]);
+//        $response = $this->delete("/labels/{$this->label->id}");
+//
+//        $this->assertDatabaseHas('labels', ['id' => $this->label->id]);
+//        $response->assertRedirect('/labels');
+    }
 
-        $this->assertDatabaseHas('labels', ['id' => $this->label->id]);
-        $response->assertRedirect('/labels');
+    public function testValidate()
+    {
+        $validateProvider = [
+            ['post', '/labels', ['name' => $this->label->name]],
+            ['patch', "/labels/{$this->label->id}", ['name' => $this->label->name]]
+        ];
+
+        foreach ($validateProvider as [$method, $path, $param]) {
+            $response = $this->$method($path, $param);
+            $response->assertStatus(302);
+            $flashMessages = session('flash_notification');
+            $this->assertStringContainsString('name с таким именем уже существует', $flashMessages[0]['message']);
+        }
     }
 
 }

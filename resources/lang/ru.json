@@ -17,7 +17,6 @@
   "Update": "Обновить",
   "Change": "Изменить",
   "Delete": "Удалить",
-  "The name has already been taken.": "Статус с таким именем уже существует",
   "Tasks": "Задачи",
   "Labels": "Метки",
   "Sign in": "Вход",
@@ -31,5 +30,6 @@
   "Change of task": "Изменение задачи",
   "Apply": "Применить",
   "Reset": "Сбросить",
-  "Create label": "Создать метку"
+  "Create label": "Создать метку",
+  "Change of label": "Изменение метки"
 }

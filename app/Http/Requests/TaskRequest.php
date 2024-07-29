@@ -28,6 +28,7 @@ class TaskRequest extends FormRequest
             'description' => 'max:1000',
             'status_id' => 'required|exists:task_statuses,id',
             'assigned_to_id' => 'nullable|exists:users,id',
+            'labels' => 'nullable|array',
         ];
     }
 

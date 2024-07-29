@@ -28,14 +28,16 @@ class TaskStatusRequest extends FormRequest
         ];
     }
 
-    protected function failedValidation(Validator $validator)
+    public function after(): array
     {
-        $errors = $validator->errors()->all();
-        $errorMessage = implode(' ', $errors);
-        flash($errorMessage)->error();
-
-        throw new HttpResponseException(
-            redirect()->back()->withInput()
-        );
+        return [
+            function (Validator $validator) {
+                $errors = $validator->errors();
+                if ($errors->has('name') && $errors->first('name') === 'The name has already been taken.') {
+                    $errors->forget('name');
+                    $errors->add('name', 'Статус с таким именем уже существует');
+                }
+            }
+        ];
     }
 }
