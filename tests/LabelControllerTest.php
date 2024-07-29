@@ -3,7 +3,9 @@
 namespace Tests;
 
 use App\Models\Label;
+use App\Models\Task;
 use App\Models\User;
+use App\Models\TaskStatus;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -96,25 +98,27 @@ class LabelControllerTest extends TestCase
 
     public function testDestroyLabelInUse()
     {
-//        $task = Task::factory()->create(['label_id' => $this->label->id]);
-//        $response = $this->delete("/labels/{$this->label->id}");
-//
-//        $this->assertDatabaseHas('labels', ['id' => $this->label->id]);
-//        $response->assertRedirect('/labels');
+        $taskStatus = TaskStatus::factory()->create();
+        $task = Task::factory()->create();
+        $task->labels()->attach($this->label->id);
+        $response = $this->delete("/labels/{$this->label->id}");
+
+        $this->assertDatabaseHas('labels', ['id' => $this->label->id]);
+        $response->assertRedirect('/labels');
     }
 
     public function testValidate()
     {
         $validateProvider = [
-            ['post', '/labels', ['name' => $this->label->name]],
-            ['patch', "/labels/{$this->label->id}", ['name' => $this->label->name]]
+            ['post', '/labels', []],
+            ['patch', "/labels/{$this->label->id}", ['id' => $this->label->id]]
         ];
 
         foreach ($validateProvider as [$method, $path, $param]) {
             $response = $this->$method($path, $param);
             $response->assertStatus(302);
-            $flashMessages = session('flash_notification');
-            $this->assertStringContainsString('name с таким именем уже существует', $flashMessages[0]['message']);
+            $response->assertRedirect('/');
+            $response->assertSessionHasErrors(['name']);
         }
     }
 

@@ -108,16 +108,15 @@ class TaskStatusControllerTest extends TestCase
     public function testValidate()
     {
         $validateProvider = [
-            ['post', '/task_statuses', ['name' => $this->taskStatus->name]],
-            ['patch', "/task_statuses/{$this->taskStatus->id}", ['name' => $this->taskStatus->name]]
+            ['post', '/task_statuses', []],
+            ['patch', "/task_statuses/{$this->taskStatus->id}", ['id' => $this->taskStatus->id]]
         ];
 
         foreach ($validateProvider as [$method, $path, $param]) {
             $response = $this->$method($path, $param);
             $response->assertStatus(302);
             $response->assertRedirect('/');
-            $flashMessages = session('flash_notification');
-            $this->assertStringContainsString('name с таким именем уже существует', $flashMessages[0]['message']);
+            $response->assertSessionHasErrors(['name']);
         }
     }
 }
