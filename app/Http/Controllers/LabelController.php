@@ -42,9 +42,10 @@ class LabelController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Label $label)
+    public function edit(Label $label, Request $request)
     {
-        return view('labels.edit', compact('label'));
+        $backUrl = $request->input('backUrl', route('labels.index'));
+        return view('labels.create', ['label' => new Label(), 'backUrl' => $backUrl]);
     }
 
     /**
@@ -54,7 +55,8 @@ class LabelController extends Controller
     {
         $this->saveLabel($label, $request);
         flash('Метка успешно обновлена')->success();
-        return redirect()->route('labels.index');
+        $backUrl = $request->input('backUrl', route('labels.index'));
+        return redirect($backUrl);
     }
 
     /**

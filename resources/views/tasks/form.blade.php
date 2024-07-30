@@ -18,7 +18,7 @@
     <div class="flex justify-between items-center mb-3">
         {{ html()->label(__('Labels'), 'points')->class('block text-gray-700') }}
         <a href="{{ route('labels.create', ['backUrl'=>url()->current()]) }}"
-           class="plus-button">✚</a>
+           class="plus-button" id="labelCreateButton">✚</a>
     </div>
 </div>
 {{ html()->select('labels', $labels->pluck('name', 'id')->toArray())->multiple()

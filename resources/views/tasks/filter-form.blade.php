@@ -4,6 +4,6 @@
     {{ html()->select('filter[created_by_id]', ['0' => 'Автор'] + $users->pluck('name', 'id')->toArray(), $filters['created_by_id'] ?? null) }}
     {{ html()->select('filter[assigned_to_id]', ['0' => 'Исполнитель'] + $users->pluck('name', 'id')->toArray(), $filters['assigned_to_id'] ?? null) }}
     {{ html()->submit(__('Apply'))->class('btn-primary') }}
-    {{ html()->reset(__('Reset'))->class('btn-primary')->attribute('id', 'resetButton') }}
+    {{ html()->reset(__('Reset'))->class('btn-primary')->id('resetButton') }}
     {{ html()->closeModelForm() }}
 </div>
