@@ -14,5 +14,11 @@
 {{ html()->select('assigned_to_id', ['' => ''] + $users->pluck('name', 'id')->toArray())
     ->class(' shadow-sm block mb-3 required: w-1/3') }}
 
-{{ html()->label(__('Labels'), 'points')->class('block text-gray-700 mb-3') }}
-{{ html()->select('labels', $labels->pluck('name', 'id')->toArray())->multiple()->class('shadow-sm block mb-3 required: w-1/3 h-40') }}
+<div class="w-1/3 flex flex-col">
+    <div class="flex justify-between items-center mb-3">
+        {{ html()->label(__('Labels'), 'points')->class('block text-gray-700') }}
+        <button class="plus-button">✚</button>
+    </div>
+</div>
+{{ html()->select('labels', $labels->pluck('name', 'id')->toArray())->multiple()
+    ->class('shadow-sm block mb-3 required: w-1/3 h-40') }}

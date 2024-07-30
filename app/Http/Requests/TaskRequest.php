@@ -32,4 +32,11 @@ class TaskRequest extends FormRequest
         ];
     }
 
+    protected function prepareForValidation(): void
+    {
+        if (empty($this->labels)) {
+            $this->merge(['labels' => []]);
+        }
+    }
+
 }
