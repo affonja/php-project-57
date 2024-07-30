@@ -22,9 +22,10 @@ class LabelController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        return view('labels.create', ['label' => new Label()]);
+        $backUrl = $request->input('backUrl', route('labels.index'));
+        return view('labels.create', ['label' => new Label(), 'backUrl' => $backUrl]);
     }
 
     /**
@@ -34,7 +35,8 @@ class LabelController extends Controller
     {
         $this->saveLabel(new Label(), $request);
         flash('Метка успешно создана')->success();
-        return redirect()->route('labels.index');
+        $backUrl = $request->input('backUrl', route('labels.index'));
+        return redirect($backUrl);
     }
 
     /**

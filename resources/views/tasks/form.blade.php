@@ -17,7 +17,8 @@
 <div class="w-1/3 flex flex-col">
     <div class="flex justify-between items-center mb-3">
         {{ html()->label(__('Labels'), 'points')->class('block text-gray-700') }}
-        <button class="plus-button">✚</button>
+        <a href="{{ route('labels.create', ['backUrl'=>url()->current()]) }}"
+           class="plus-button">✚</a>
     </div>
 </div>
 {{ html()->select('labels', $labels->pluck('name', 'id')->toArray())->multiple()
