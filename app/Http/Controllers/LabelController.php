@@ -54,7 +54,7 @@ class LabelController extends Controller
     public function update(LabelRequest $request, Label $label)
     {
         $this->saveLabel($label, $request);
-        flash('Метка успешно обновлена')->success();
+        flash(__('Label updated successfully'))->success();
         $backUrl = $request->input('backUrl', route('labels.index'));
         return redirect($backUrl);
     }
@@ -66,9 +66,9 @@ class LabelController extends Controller
     {
         try {
             $label->delete();
-            flash('Метка успешно удалёна')->success();
+            flash(__('Label removed successfully'))->success();
         } catch (\Exception $e) {
-            flash('Не удалось удалить метку')->error();
+            flash(__('Failed to remove label'))->error();
         }
         return redirect()->route('labels.index');
     }

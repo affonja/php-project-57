@@ -31,5 +31,18 @@
   "Apply": "Применить",
   "Reset": "Сбросить",
   "Create label": "Создать метку",
-  "Change of label": "Изменение метки"
+  "Change of label": "Изменение метки",
+  "Label removed successfully": "Метка успешно удалена",
+  "Label updated successfully": "Метка успешно обновлена",
+  "Failed to remove label": "Не удалось удалить метку",
+  "Task created successfully": "Задача успешно создана",
+  "Task updated successfully": "Задача успешно обновлена",
+  "The task was successfully deleted": "Задача успешно удалена",
+  "Failed to delete task": "Не удалось удалить задачу",
+  "Status successfully created": "Статус успешно создан",
+  "Status updated successfully": "Статус успешно обновлен",
+  "Status successfully deleted": "Статус успешно удалён",
+  "Failed to delete status": "Не удалось удалить статус",
+  "Label with the same name already exists": "Метка с таким именем уже существует",
+  "Status with the same name already exists": "Статус с таким именем уже существует"
 }

@@ -31,7 +31,7 @@ class TaskStatusController extends Controller
     public function store(TaskStatusRequest $request)
     {
         $this->saveTaskStatus(new TaskStatus(), $request);
-        flash('Статус успешно создан')->success();
+        flash(__('Status successfully created'))->success();
         return redirect()->route('task_statuses.index');
     }
 
@@ -49,7 +49,7 @@ class TaskStatusController extends Controller
     public function update(TaskStatusRequest $request, TaskStatus $taskStatus)
     {
         $this->saveTaskStatus($taskStatus, $request);
-        flash('Статус успешно обновлен')->success();
+        flash(__('Status updated successfully'))->success();
         return redirect()->route('task_statuses.index');
     }
 
@@ -60,9 +60,9 @@ class TaskStatusController extends Controller
     {
         try {
             $taskStatus->delete();
-            flash('Статус успешно удалён')->success();
+            flash(__('Status successfully deleted'))->success();
         } catch (\Exception $e) {
-            flash('Не удалось удалить статус')->error();
+            flash(__('Failed to delete status'))->error();
         }
         return redirect()->route('task_statuses.index');
     }

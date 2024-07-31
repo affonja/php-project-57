@@ -40,7 +40,7 @@ class LabelRequest extends FormRequest
                 $errors = $validator->errors();
                 if ($errors->has('name') && $errors->first('name') === 'The name has already been taken.') {
                     $errors->forget('name');
-                    $errors->add('name', 'Метка с таким именем уже существует');
+                    $errors->add('name', __('Label with the same name already exists'));
                 }
             }
         ];

@@ -1,14 +1,14 @@
 <?php
 
-namespace Tests;
+namespace Tests\Feature;
 
 use App\Models\Label;
 use App\Models\Task;
-use App\Models\User;
 use App\Models\TaskStatus;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Illuminate\Http\Exceptions\HttpResponseException;
+use Tests\TestCase;
 
 class LabelControllerTest extends TestCase
 {
