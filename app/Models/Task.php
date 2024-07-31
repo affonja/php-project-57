@@ -12,7 +12,7 @@ class Task extends Model
     protected $fillable = [
         'name', 'description', 'status_id', 'created_by_id', 'assigned_to_id'
     ];
-    protected $appends = ['author_name', 'status_name', 'executor_name'];
+    protected $appends = ['author_name', 'status_name', 'executor_name', 'labels_name'];
 
     public function author()
     {
@@ -49,11 +49,15 @@ class Task extends Model
         return $this->belongsToMany(Label::class);
     }
 
+    public function getLabelsNameAttribute()
+    {
+        return $this->labels->pluck('name')->toArray();
+    }
 
     protected static function booted()
     {
         static::addGlobalScope('withRelations', function ($query) {
-            $query->with(['author', 'status', 'executor']);
+            $query->with(['author', 'status', 'executor', 'labels']);
         });
     }
 
