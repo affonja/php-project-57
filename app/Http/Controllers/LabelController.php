@@ -45,7 +45,7 @@ class LabelController extends Controller
     public function edit(Label $label, Request $request)
     {
         $backUrl = $request->input('backUrl', route('labels.index'));
-        return view('labels.create', ['label' => new Label(), 'backUrl' => $backUrl]);
+        return view('labels.edit', ['label' => $label, 'backUrl' => $backUrl]);
     }
 
     /**

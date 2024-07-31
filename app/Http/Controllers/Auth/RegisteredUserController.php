@@ -54,6 +54,5 @@ class RegisteredUserController extends Controller
         flash('Пользователь зарегистрирован')->success();
 
         return redirect()->intended(route('index', absolute: false));
-//        return redirect(route('index', absolute: false));
     }
 }
