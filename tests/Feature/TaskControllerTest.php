@@ -9,7 +9,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
-
 class TaskControllerTest extends TestCase
 {
     use RefreshDatabase;
@@ -90,7 +89,10 @@ class TaskControllerTest extends TestCase
     public function testUpdate()
     {
         $updatedData = Task::factory()->make()->only([
-            'name', 'description', 'status_id', 'assigned_to_id'
+            'name',
+            'description',
+            'status_id',
+            'assigned_to_id'
         ]);
         $response = $this->patch("/tasks/{$this->task->id}", $updatedData);
         $this->assertDatabaseHas('tasks', $updatedData);
@@ -110,5 +112,4 @@ class TaskControllerTest extends TestCase
         $response = $this->actingAs($newUser)->delete("/tasks/{$this->task->id}");
         $response->assertStatus(302);
     }
-
 }

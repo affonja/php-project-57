@@ -38,5 +38,4 @@ class TaskRequest extends FormRequest
             $this->merge(['labels' => []]);
         }
     }
-
 }

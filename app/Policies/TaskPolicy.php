@@ -50,6 +50,4 @@ class TaskPolicy
     {
         return $user->id === $task->created_by_id;
     }
-
-
 }

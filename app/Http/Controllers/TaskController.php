@@ -4,17 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\TaskRequest;
 use App\Models\Label;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use App\Models\TaskStatus;
 use App\Models\Task;
 use App\Models\User;
 
-
 class TaskController extends Controller
 {
-    protected $taskStatuses;
-    protected $users;
-    protected $labels;
+    protected Collection $taskStatuses;
+    protected Collection $users;
+    protected Collection $labels;
 
     public function __construct()
     {

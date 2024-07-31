@@ -121,5 +121,4 @@ class LabelControllerTest extends TestCase
             $response->assertSessionHasErrors(['name']);
         }
     }
-
 }

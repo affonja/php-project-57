@@ -51,5 +51,4 @@ class TaskStatusPolicy
     {
         return $user !== null;
     }
-
 }

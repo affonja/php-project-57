@@ -50,5 +50,4 @@ class LabelPolicy
     {
         return $user !== null;
     }
-
 }
