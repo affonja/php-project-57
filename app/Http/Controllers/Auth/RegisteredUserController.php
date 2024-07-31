@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 
@@ -21,6 +22,7 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
+        Redirect::setIntendedUrl(url()->previous());
         return view('auth.register');
     }
 
@@ -51,6 +53,7 @@ class RegisteredUserController extends Controller
 
         flash('Пользователь зарегистрирован')->success();
 
-        return redirect(route('index', absolute: false));
+        return redirect()->intended(route('index', absolute: false));
+//        return redirect(route('index', absolute: false));
     }
 }
