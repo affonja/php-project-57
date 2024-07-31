@@ -64,7 +64,7 @@ class TaskController extends Controller
     public function store(TaskRequest $request)
     {
         $this->saveTask(new Task(), $request, auth()->id());
-        flash(__('Task created successfully'))->success();
+        flash(__('Задача успешно создана'))->success();
         return redirect()->route('tasks.index');
     }
 
@@ -96,7 +96,7 @@ class TaskController extends Controller
     public function update(TaskRequest $request, Task $task)
     {
         $this->saveTask($task, $request);
-        flash(__('Task updated successfully'))->success();
+        flash(__('Задача успешно обновлена'))->success();
         return redirect()->route('tasks.index');
     }
 
@@ -107,9 +107,9 @@ class TaskController extends Controller
     {
         try {
             $task->delete();
-            flash(__('The task was successfully deleted'))->success();
+            flash(__('Задача успешно удалена'))->success();
         } catch (\Exception $e) {
-            flash(__('Failed to delete task'))->error();
+            flash(__('Не удалось удалить задачу'))->error();
         }
 
         return redirect()->route('tasks.index');

@@ -1,17 +1,17 @@
 @extends('layouts.app')
 @section('content')
     <div class="grid col-span-full">
-        <x-h1>{{ __('Statuses') }}</x-h1>
+        <x-h1>{{ __('Статусы') }}</x-h1>
 
         @auth
             <div>
                 <x-primary-a-button :route="route('task_statuses.create')" :method="'GET'" class="mt-4">
-                    {{ __('Create status') }}
+                    {{ __('Создать статус') }}
                 </x-primary-a-button>
             </div>
 
             <x-table.table
-                    :headers="['ID', __('Name'), __('Date of creation'), __('Action')]"
+                    :headers="['ID', __('Имя'), __('Дата создания'), __('Действия')]"
                     :items="$taskStatuses"
                     :routes="['delete'=> 'task_statuses.destroy',
                                'update'=> 'task_statuses.edit']"
@@ -21,7 +21,7 @@
         @endauth
         @guest
             <x-table.table
-                    :headers="['ID', __('Name'), __('Date of creation')]"
+                    :headers="['ID', __('Имя'), __('Дата создания')]"
                     :items="$taskStatuses"
                     :fields="['id', 'name', 'created_at']">
                 >
