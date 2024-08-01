@@ -41,6 +41,6 @@ class DatabaseSeeder extends Seeder
 //            ['name' => 'доработка', 'description' => 'Новая фича', 'created_at' => $now],
 //        ]);
 
-        Task::factory()->count(20)->create();
+//        Task::factory()->count(20)->create();
     }
 }
