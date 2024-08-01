@@ -7,6 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Arr;
+use Illuminate\Validation\Rule;
 
 class LabelRequest extends FormRequest
 {
@@ -28,8 +29,8 @@ class LabelRequest extends FormRequest
         $labelId = $this->route('label') ? $this->route('label')->id : null;
 
         return [
-            'name' => 'required|max:255|unique:labels,name,' . $labelId,
-            'description' => 'nullable|max:1000'
+            'description' => 'nullable|max:1000',
+            'name' => ['required', 'max:255', Rule::unique('labels', 'name')->ignore($labelId)]
         ];
     }
 
