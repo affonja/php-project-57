@@ -25,3 +25,4 @@ yarn-error.log
 /.phpstorm.meta.php
 /tests/Browser/
 /tests/DuskTestCase.php
+/.env.dusk.local
