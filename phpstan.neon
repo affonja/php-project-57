@@ -1,11 +1,10 @@
 parameters:
   level: 8
   paths:
-#    - app
-#    - routes
-#    - tests
-#    - tests
-    - app/Http/Controllers/TaskController.php
+    - app
+    - routes
+    - tests
+    - tests
 
   checkMissingIterableValueType: false
   checkGenericClassInNonGenericObjectType: false
