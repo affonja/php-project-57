@@ -118,7 +118,7 @@ class TaskController extends Controller
     /**
      * Save the task to the database.
      */
-    private function saveTask(Task $task, TaskRequest $request, $author_id = null)
+    private function saveTask(Task $task, TaskRequest $request, mixed $author_id = null)
     {
         $validated = $request->validated();
         $task->fill($validated);

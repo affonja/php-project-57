@@ -29,4 +29,4 @@ ide-helper:
 	php artisan ide-helper:mod -n
 
 inspect:
-	composer exec --verbose phpstan analyse
+	composer exec --verbose phpstan analyse > phpstan_output.txt

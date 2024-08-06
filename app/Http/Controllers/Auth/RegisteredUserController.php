@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Mail\RegisterUser;
+use App\Mail\registerUser;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -49,7 +49,7 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        Mail::to($request->user())->send(new RegisterUser($user));
+        Mail::to($request->user())->send(new registerUser($user));
 
         flash('Пользователь зарегистрирован')->success();
 
