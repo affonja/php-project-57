@@ -46,7 +46,7 @@ class TaskControllerTest extends TestCase
         auth()->logout();
         $response = $this->get($path);
         $response->assertStatus($code);
-        if ($view) {
+        if ($view !== null) {
             $response->assertViewIs($view);
             $response->assertViewHas($viewHas);
         }

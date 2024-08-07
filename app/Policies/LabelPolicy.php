@@ -32,7 +32,7 @@ class LabelPolicy
      */
     public function create(User $user): bool
     {
-        return $user !== null;
+        return true;
     }
 
     /**
@@ -40,7 +40,7 @@ class LabelPolicy
      */
     public function update(User $user, Label $Label): bool
     {
-        return $user !== null;
+        return true;
     }
 
     /**
@@ -48,6 +48,6 @@ class LabelPolicy
      */
     public function delete(User $user, Label $Label): bool
     {
-        return $user !== null;
+        return true;
     }
 }

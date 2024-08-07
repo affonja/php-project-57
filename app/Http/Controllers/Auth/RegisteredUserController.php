@@ -49,7 +49,9 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        Mail::to($request->user())->send(new RegisterUser($user));
+        if (env('MAIL_ENABLED')) {
+            Mail::to($request->user())->send(new RegisterUser($user));
+        }
 
         flash('Пользователь зарегистрирован')->success();
 

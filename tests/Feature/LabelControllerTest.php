@@ -40,7 +40,7 @@ class LabelControllerTest extends TestCase
         auth()->logout();
         $response = $this->get($path);
         $response->assertStatus($code);
-        if ($view) {
+        if ($view !== null) {
             $response->assertViewIs($view);
             $response->assertViewHas('labels');
         }
@@ -117,7 +117,7 @@ class LabelControllerTest extends TestCase
         ];
 
         foreach ($validateProvider as [$method, $path, $param]) {
-            $response = $this->$method($path, $param);
+            $response = $this->call($method, $path, $param);
             $response->assertStatus(302);
             $response->assertRedirect('/');
             $response->assertSessionHasErrors(['name']);

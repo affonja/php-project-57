@@ -83,7 +83,10 @@ class Task extends Model
 
     public function getExecutorNameAttribute()
     {
-        return $this->executor ? $this->executor->name : null;
+        if ($this->executor) {
+            return $this->executor->name;
+        }
+        return null;
     }
 
     public function labels()
@@ -105,7 +108,7 @@ class Task extends Model
 
     public function scopeFilterByStatus(Builder $query, string | null $statusId)
     {
-        if (!empty($statusId)) {
+        if ($statusId !== null && $statusId !== '0') {
             return $query->where('status_id', $statusId);
         }
         return $query;
@@ -113,7 +116,7 @@ class Task extends Model
 
     public function scopeFilterByCreatedBy(Builder $query, string | null $createdById)
     {
-        if (!empty($createdById)) {
+        if ($createdById !== null && $createdById !== '0') {
             return $query->where('created_by_id', $createdById);
         }
         return $query;
@@ -121,7 +124,7 @@ class Task extends Model
 
     public function scopeFilterByAssignedTo(Builder $query, string | null $assignedToId)
     {
-        if (!empty($assignedToId)) {
+        if ($assignedToId !== null && $assignedToId !== '0') {
             return $query->where('assigned_to_id', $assignedToId);
         }
         return $query;

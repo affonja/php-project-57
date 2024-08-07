@@ -122,7 +122,9 @@ class TaskController extends Controller
     {
         $validated = $request->validated();
         $task->fill($validated);
-        $author_id === null ?: $task->created_by_id = $author_id;
+        if ($author_id !== null) {
+            $task->created_by_id = $author_id;
+        }
         $task->save();
         $task->labels()->sync($validated['labels']);
     }
