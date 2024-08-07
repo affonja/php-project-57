@@ -103,7 +103,7 @@ class Task extends Model
         });
     }
 
-    public function scopeFilterByStatus(Builder $query, string $statusId)
+    public function scopeFilterByStatus(Builder $query, string | null $statusId)
     {
         if (!empty($statusId)) {
             return $query->where('status_id', $statusId);
@@ -111,7 +111,7 @@ class Task extends Model
         return $query;
     }
 
-    public function scopeFilterByCreatedBy(Builder $query, string $createdById)
+    public function scopeFilterByCreatedBy(Builder $query, string | null $createdById)
     {
         if (!empty($createdById)) {
             return $query->where('created_by_id', $createdById);
@@ -119,7 +119,7 @@ class Task extends Model
         return $query;
     }
 
-    public function scopeFilterByAssignedTo(Builder $query, string $assignedToId)
+    public function scopeFilterByAssignedTo(Builder $query, string | null $assignedToId)
     {
         if (!empty($assignedToId)) {
             return $query->where('assigned_to_id', $assignedToId);
