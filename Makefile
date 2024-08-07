@@ -7,8 +7,14 @@ start-npm:
 setup:
 	composer install
 
+db-create:
+	touch database/database.sqlite
+
 migrate:
 	php artisan migrate
+
+seed:
+	php artisan db:seed
 
 test:
 	php artisan test

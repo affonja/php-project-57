@@ -8,9 +8,36 @@
 
 ## About
 
+Трекер задач на laravel
+
 ## Requirements
 
+> PHP 8.2
+>
+>Composer
+>
+>Node.js & npm
+>
+>SQLite for local
+>
+>Make
+>
+
 ## Install
+
+> $ git clone https://github.com/affonja/php-project-57
+>
+>$ cd php-project-57
+>
+>$ make setup
+>
+>$ make db-create
+>
+>$ make migrate
+>
+>$ make seed
+>
+>$ make start
 
 ## Example
 
