@@ -28,3 +28,4 @@ yarn-error.log
 /.env.dusk.local
 /phpstan_output.txt
 /config/ide-helper.php
+/build/

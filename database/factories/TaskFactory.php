@@ -22,8 +22,8 @@ class TaskFactory extends Factory
         $userIds = User::pluck('id')->toArray();
 
         return [
-            'name' => $this->faker->sentence(3, true),
-            'description' => $this->faker->sentence(6, true),
+            'name' => $this->faker->sentence(3),
+            'description' => $this->faker->sentence(6),
             'status_id' => $this->faker->randomElement($statusIds),
             'created_by_id' => $this->faker->randomElement($userIds),
             'assigned_to_id' => $this->faker->randomElement($userIds),

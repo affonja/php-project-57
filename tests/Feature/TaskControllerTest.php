@@ -29,10 +29,10 @@ class TaskControllerTest extends TestCase
     {
         $id = 1;
         return [
-            ["/tasks", 200, 'tasks.index', 'tasks'],
-            ["/tasks/$id", 200, 'tasks.show', 'task'],
-            ["/tasks/create", 302, ''],
-            ["/tasks/$id/edit", 302, '']
+            ['/tasks', 200, 'tasks', 'tasks.index'],
+            ["/tasks/$id", 200, 'task', 'tasks.show'],
+            ['/tasks/create', 302, ''],
+            ['/tasks/$id/edit', 302, '']
         ];
     }
 

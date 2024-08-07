@@ -4,8 +4,8 @@ includes:
 parameters:
   level: 8
   paths:
-#    - app
-#    - routes
+    - app
+    - routes
     - tests
 
   checkMissingIterableValueType: false
@@ -29,6 +29,7 @@ parameters:
   ignoreErrors:
    - '#Parameter \#1 \$message of function flash expects string\|null, array\|string\|null given.#'
    - '#Cannot call method [\w]+\(\) on App\\Models\\User\|null.#'
+   - '#Cannot access property \$[\w]+ on App\\Models\\User\|null.#'
    - '#Dynamic call to static method#'
    # TODO: remove this when larastan release new version
    - '#<int, Illuminate\\Database\\Eloquent\\Model>\|Illuminate\\Database\\Eloquent\\Model\::\$id#'
