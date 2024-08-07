@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property string $name
@@ -47,7 +48,11 @@ class Task extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'description', 'status_id', 'created_by_id', 'assigned_to_id'
+        'name',
+        'description',
+        'status_id',
+        'created_by_id',
+        'assigned_to_id'
     ];
     protected $appends = ['author_name', 'status_name', 'executor_name', 'labels_name'];
 
@@ -78,7 +83,7 @@ class Task extends Model
 
     public function getExecutorNameAttribute()
     {
-        return $this->executor->name;
+        return $this->executor ? $this->executor->name : null;
     }
 
     public function labels()
@@ -98,7 +103,7 @@ class Task extends Model
         });
     }
 
-    public function scopeFilterByStatus($query, $statusId)
+    public function scopeFilterByStatus(Builder $query, string $statusId)
     {
         if (!empty($statusId)) {
             return $query->where('status_id', $statusId);
@@ -106,7 +111,7 @@ class Task extends Model
         return $query;
     }
 
-    public function scopeFilterByCreatedBy($query, $createdById)
+    public function scopeFilterByCreatedBy(Builder $query, string $createdById)
     {
         if (!empty($createdById)) {
             return $query->where('created_by_id', $createdById);
@@ -114,7 +119,7 @@ class Task extends Model
         return $query;
     }
 
-    public function scopeFilterByAssignedTo($query, $assignedToId)
+    public function scopeFilterByAssignedTo(Builder $query, string $assignedToId)
     {
         if (!empty($assignedToId)) {
             return $query->where('assigned_to_id', $assignedToId);

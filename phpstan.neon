@@ -4,7 +4,6 @@ includes:
 parameters:
   level: 8
   paths:
-#      - app/Models/Task.php
     - app
     - routes
     - tests
