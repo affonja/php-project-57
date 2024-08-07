@@ -83,7 +83,7 @@ class Task extends Model
 
     public function getExecutorNameAttribute()
     {
-        if ($this->executor) {
+        if ($this->executor !== null) {
             return $this->executor->name;
         }
         return null;

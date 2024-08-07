@@ -28,7 +28,7 @@ class LabelRequest extends FormRequest
     {
         /** @var \App\Models\Label|null $label */
         $label = $this->route('label');
-        if ($label) {
+        if ($label !== null) {
             $labelId = $label->id;
         } else {
             $labelId = null;
