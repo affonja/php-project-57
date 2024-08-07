@@ -13,12 +13,14 @@ class TaskControllerTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected Task $task;
+
     public function setUp(): void
     {
         parent::setUp();
 
         $users = User::factory()->count(5)->create();
-        $taskStatuses = TaskStatus::factory()->count(5)->create();
+        TaskStatus::factory()->count(5)->create();
         $this->actingAs($users->random());
         $this->task = Task::factory()->create();
     }
@@ -27,22 +29,26 @@ class TaskControllerTest extends TestCase
     {
         $id = 1;
         return [
-            ["/tasks", 200, 'tasks.index'],
-            ["/tasks/$id", 200, 'tasks.show'],
-            ["/tasks/create", 302],
-            ["/tasks/$id/edit", 302]
+            ["/tasks", 200, 'tasks.index', 'tasks'],
+            ["/tasks/$id", 200, 'tasks.show', 'task'],
+            ["/tasks/create", 302, ''],
+            ["/tasks/$id/edit", 302, '']
         ];
     }
 
     #[DataProvider('pathProvider')]
-    public function testAccessGuest($path, $code, $view = null)
-    {
+    public function testAccessGuest(
+        string $path,
+        int $code,
+        array | string $viewHas,
+        string | null $view = null
+    ) {
         auth()->logout();
         $response = $this->get($path);
         $response->assertStatus($code);
-        if ($path === '/tasks') {
+        if ($view) {
             $response->assertViewIs($view);
-            $response->assertViewHas('tasks');
+            $response->assertViewHas($viewHas);
         }
     }
 

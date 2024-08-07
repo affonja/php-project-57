@@ -13,6 +13,8 @@ class TaskStatusControllerTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected TaskStatus $taskStatus;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -32,7 +34,7 @@ class TaskStatusControllerTest extends TestCase
     }
 
     #[DataProvider('pathProvider')]
-    public function testAccessGuest($path, $code, $view = null)
+    public function testAccessGuest(string $path, int $code, string | null $view = null)
     {
         auth()->logout();
         $response = $this->get($path);
@@ -97,7 +99,7 @@ class TaskStatusControllerTest extends TestCase
 
     public function testDestroyTaskStatusInUse()
     {
-        $task = Task::factory()->create(['status_id' => $this->taskStatus->id]);
+        Task::factory()->create(['status_id' => $this->taskStatus->id]);
         $response = $this->delete("/task_statuses/{$this->taskStatus->id}");
 
         $this->assertDatabaseHas('task_statuses', ['id' => $this->taskStatus->id]);

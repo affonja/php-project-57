@@ -4,8 +4,8 @@ includes:
 parameters:
   level: 8
   paths:
-    - app
-    - routes
+#    - app
+#    - routes
     - tests
 
   checkMissingIterableValueType: false

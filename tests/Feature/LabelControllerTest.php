@@ -14,6 +14,8 @@ class LabelControllerTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected Label $label;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -33,7 +35,7 @@ class LabelControllerTest extends TestCase
     }
 
     #[DataProvider('pathProvider')]
-    public function testAccessGuest($path, $code, $view = null)
+    public function testAccessGuest(string $path, int $code, string | null $view = null)
     {
         auth()->logout();
         $response = $this->get($path);
