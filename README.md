@@ -3,6 +3,7 @@
 ### Hexlet tests and linter status:
 
 [![Actions Status](https://github.com/affonja/php-project-57/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/affonja/php-project-57/actions)
+[![my-check](https://github.com/affonja/php-project-57/actions/workflows/my-check.yml/badge.svg)](https://github.com/affonja/php-project-57/actions/workflows/my-check.yml)
 [![Maintainability](https://api.codeclimate.com/v1/badges/a5bde8f0a3a8c28b4baf/maintainability)](https://codeclimate.com/github/affonja/php-project-57/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/a5bde8f0a3a8c28b4baf/test_coverage)](https://codeclimate.com/github/affonja/php-project-57/test_coverage)
 

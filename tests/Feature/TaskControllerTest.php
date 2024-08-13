@@ -5,21 +5,21 @@ namespace Tests\Feature;
 use App\Models\Task;
 use App\Models\TaskStatus;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Database\Seeders\TaskSeeder;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Auth;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 class TaskControllerTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected Task $task;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $users = User::factory()->count(5)->create();
+        $users = User::factory()->count(1)->create();
         TaskStatus::factory()->count(5)->create();
         $this->actingAs($users->random());
         $this->task = Task::factory()->create();
@@ -27,24 +27,25 @@ class TaskControllerTest extends TestCase
 
     public static function pathProvider(): array
     {
-        $id = 1;
         return [
-            ['/tasks', 200, 'tasks', 'tasks.index'],
-            ["/tasks/$id", 200, 'task', 'tasks.show'],
-            ['/tasks/create', 302, ''],
-            ['/tasks/$id/edit', 302, '']
+            ['tasks.index', [], 200, 'tasks', 'tasks.index'],
+            ['tasks.show', ['task' => 1], 200, 'task', 'tasks.show'],
+            ['tasks.create', [], 302, ''],
+            ['tasks.edit', ['task' => 1], 302, ''],
         ];
     }
 
     #[DataProvider('pathProvider')]
     public function testAccessGuest(
         string $path,
+        array $param,
         int $code,
-        array | string $viewHas,
-        string | null $view = null
+        string $viewHas,
+        ?string $view = null,
     ) {
         auth()->logout();
-        $response = $this->get($path);
+        $response = $this->get(route($path, $param));
+
         $response->assertStatus($code);
         if ($view !== null) {
             $response->assertViewIs($view);
@@ -54,23 +55,28 @@ class TaskControllerTest extends TestCase
 
     public function testIndex()
     {
-        $response = $this->get('/tasks');
+        $this->seed(TaskSeeder::class);
+        $response = $this->get(route('tasks.index'));
 
         $response->assertStatus(200);
         $response->assertViewIs('tasks.index');
-        $response->assertViewHas('tasks');
+        $response->assertViewHas('tasks', function ($tasks) {
+            return $tasks instanceof LengthAwarePaginator;
+        });
     }
 
     public function testCreate()
     {
-        $response = $this->get('/tasks/create');
+        $response = $this->get(route('tasks.create'));
+
         $response->assertStatus(200);
         $response->assertViewIs('tasks.create');
     }
 
     public function testEdit()
     {
-        $response = $this->get("/tasks/{$this->task->id}/edit");
+        $response = $this->get(route('tasks.edit', ['task' => $this->task->id]));
+
         $response->assertStatus(200);
         $response->assertViewIs('tasks.edit');
         $response->assertViewHas('task', $this->task);
@@ -79,14 +85,17 @@ class TaskControllerTest extends TestCase
     public function testStore()
     {
         $task = Task::factory()->make();
-        $response = $this->post('/tasks', $task->toArray());
-        $this->assertDatabaseHas('tasks', ['name' => $task->name]);
+        $response = $this->post(route('tasks.store'), $task->toArray());
+
+        $response->assertStatus(302);
         $response->assertRedirectToRoute('tasks.index');
+        $this->assertDatabaseHas('tasks', ['name' => $task->name]);
     }
 
     public function testShow()
     {
-        $response = $this->get("/tasks/{$this->task->id}");
+        $response = $this->get(route('tasks.show', ['task' => $this->task->id]));
+
         $response->assertStatus(200);
         $response->assertViewIs('tasks.show');
         $response->assertViewHas('task', $this->task);
@@ -98,24 +107,29 @@ class TaskControllerTest extends TestCase
             'name',
             'description',
             'status_id',
-            'assigned_to_id'
+            'assigned_to_id',
         ]);
-        $response = $this->patch("/tasks/{$this->task->id}", $updatedData);
+        $response = $this->patch(route('tasks.update', ['task' => $this->task->id]), $updatedData);
+
+        $response->assertStatus(302);
+        $response->assertRedirectToRoute('tasks.index');
         $this->assertDatabaseHas('tasks', $updatedData);
-        $response->assertRedirect('/tasks');
     }
 
     public function testDestroy()
     {
-        $response = $this->delete("/tasks/{$this->task->id}");
-        $this->assertDatabaseMissing('tasks', $this->task->toArray());
+        $response = $this->delete(route('tasks.destroy', ['task' => $this->task->id]));
+
+        $response->assertStatus(302);
         $response->assertRedirectToRoute('tasks.index');
+        $this->assertModelMissing($this->task);
     }
 
     public function testDestroyNotOwner()
     {
         $newUser = User::factory()->create();
-        $response = $this->actingAs($newUser)->delete("/tasks/{$this->task->id}");
-        $response->assertStatus(302);
+        $response = $this->actingAs($newUser)->delete(route('tasks.destroy', ['task' => $this->task->id]));
+
+        $response->assertStatus(403);
     }
 }

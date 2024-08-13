@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use App\Models\TaskStatus;
 use App\Models\Task;
 use App\Models\User;
+use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Gate;
 
 class TaskController extends Controller
 {
@@ -21,6 +23,8 @@ class TaskController extends Controller
         $this->taskStatuses = TaskStatus::all();
         $this->users = User::all();
         $this->labels = Label::all();
+        $this->middleware('auth')->except(['index', 'show']);
+        $this->middleware('can:delete,task')->only(['destroy']);
     }
 
     /**
@@ -105,6 +109,8 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
+        Gate::authorize('delete', $task);
+
         try {
             $task->delete();
             flash(__('Задача успешно удалена'))->success();

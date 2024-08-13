@@ -6,14 +6,12 @@ use App\Models\Label;
 use App\Models\Task;
 use App\Models\TaskStatus;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Database\Seeders\LabelSeeder;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 class LabelControllerTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected Label $label;
 
     public function setUp(): void
@@ -28,17 +26,17 @@ class LabelControllerTest extends TestCase
     public static function pathProvider(): array
     {
         return [
-            ['/labels', 200, 'labels.index'],
-            ['/labels/create', 302],
-            ['/labels/edit', 302]
+            ['labels.index', [], 200, 'labels.index'],
+            ['labels.create', [], 302],
+            ['labels.edit', ['label' => 1], 302],
         ];
     }
 
     #[DataProvider('pathProvider')]
-    public function testAccessGuest(string $path, int $code, string | null $view = null)
+    public function testAccessGuest(string $path, array $param, int $code, ?string $view = null)
     {
         auth()->logout();
-        $response = $this->get($path);
+        $response = $this->get(route($path, $param));
         $response->assertStatus($code);
         if ($view !== null) {
             $response->assertViewIs($view);
@@ -48,23 +46,24 @@ class LabelControllerTest extends TestCase
 
     public function testIndex()
     {
-        $response = $this->get('/labels');
+        $this->seed(LabelSeeder::class);
+        $response = $this->get(route('labels.index'));
 
         $response->assertStatus(200);
         $response->assertViewIs('labels.index');
-        $response->assertViewHas('labels');
+        $response->assertViewHas('labels', Label::all());
     }
 
     public function testCreate()
     {
-        $response = $this->get('/labels/create');
+        $response = $this->get(route('labels.create'));
         $response->assertStatus(200);
         $response->assertViewIs('labels.create');
     }
 
     public function testEdit()
     {
-        $response = $this->get("/labels/{$this->label->id}/edit");
+        $response = $this->get(route('labels.edit', ['label' => $this->label->id]));
 
         $response->assertStatus(200);
         $response->assertViewIs('labels.edit');
@@ -74,50 +73,54 @@ class LabelControllerTest extends TestCase
     public function testStore()
     {
         $label = Label::factory()->make();
-        $response = $this->post('/labels', ['name' => $label->name]);
+        $response = $this->post(route('labels.store', ['name' => $label->name]));
 
-        $this->assertDatabaseHas('labels', ['name' => $label->name]);
+        $response->assertStatus(302);
         $response->assertRedirectToRoute('labels.index');
+        $this->assertDatabaseHas('labels', ['name' => $label->name]);
     }
 
     public function testUpdate()
     {
         $updatedData = ['name' => fake()->word];
+        $response = $this->patch(route('labels.update', ['label' => $this->label->id]), $updatedData);
 
-        $response = $this->patch("/labels/{$this->label->id}", $updatedData);
-
+        $response->assertStatus(302);
+        $response->assertRedirectToRoute('labels.index');
         $this->assertDatabaseHas('labels', $updatedData);
-        $response->assertRedirect('/labels');
     }
 
     public function testDestroy()
     {
-        $response = $this->delete("/labels/{$this->label->id}");
+        $response = $this->delete(route('labels.destroy', ['label' => $this->label->id]));
 
-        $this->assertDatabaseMissing('labels', ['id' => $this->label->id]);
-        $response->assertRedirect('/labels');
+        $response->assertStatus(302);
+        $response->assertRedirectToRoute('labels.index');
+        $this->assertModelMissing($this->label);
     }
 
     public function testDestroyLabelInUse()
     {
-        $taskStatus = TaskStatus::factory()->create();
+        TaskStatus::factory()->create();
         $task = Task::factory()->create();
         $task->labels()->attach($this->label->id);
-        $response = $this->delete("/labels/{$this->label->id}");
+        $response = $this->delete(route('labels.destroy', ['label' => $this->label->id]));
 
-        $this->assertDatabaseHas('labels', ['id' => $this->label->id]);
-        $response->assertRedirect('/labels');
+        $response->assertStatus(302);
+        $response->assertRedirectToRoute('labels.index');
+        $this->assertModelExists($this->label);
     }
 
     public function testValidate()
     {
         $validateProvider = [
-            ['post', '/labels', []],
-            ['patch', "/labels/{$this->label->id}", ['id' => $this->label->id]]
+            ['post', 'labels.store', []],
+            ['patch', 'labels.update', ['label' => $this->label]],
         ];
 
         foreach ($validateProvider as [$method, $path, $param]) {
-            $response = $this->call($method, $path, $param);
+            $response = $this->call($method, route($path, $param));
+
             $response->assertStatus(302);
             $response->assertRedirect('/');
             $response->assertSessionHasErrors(['name']);

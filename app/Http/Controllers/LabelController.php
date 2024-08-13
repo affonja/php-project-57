@@ -3,13 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LabelRequest;
-use App\Http\Requests\TaskStatusRequest;
 use App\Models\Label;
-use App\Models\TaskStatus;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 
 class LabelController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth')->except(['index']);
+    }
+
     /**
      * Display a listing of the resource.
      */

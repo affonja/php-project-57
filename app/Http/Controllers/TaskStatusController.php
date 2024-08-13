@@ -4,16 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\TaskStatusRequest;
 use App\Models\TaskStatus;
-use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 
 class TaskStatusController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth')->except(['index']);
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
         $taskStatuses = TaskStatus::all();
+
         return view('taskStatuses.index', compact('taskStatuses'));
     }
 
@@ -32,6 +38,7 @@ class TaskStatusController extends Controller
     {
         $this->saveTaskStatus(new TaskStatus(), $request);
         flash(__('Статус успешно создан'))->success();
+
         return redirect()->route('task_statuses.index');
     }
 
@@ -50,6 +57,7 @@ class TaskStatusController extends Controller
     {
         $this->saveTaskStatus($taskStatus, $request);
         flash(__('Статус успешно изменён'))->success();
+
         return redirect()->route('task_statuses.index');
     }
 
@@ -64,6 +72,7 @@ class TaskStatusController extends Controller
         } catch (\Exception $e) {
             flash(__('Не удалось удалить статус'))->error();
         }
+
         return redirect()->route('task_statuses.index');
     }
 
