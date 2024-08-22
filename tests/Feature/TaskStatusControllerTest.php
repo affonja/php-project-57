@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use App\Models\Task;
 use App\Models\TaskStatus;
 use App\Models\User;
-use Database\Seeders\TaskStatusSeeder;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
@@ -45,7 +44,7 @@ class TaskStatusControllerTest extends TestCase
 
     public function testIndex()
     {
-        $this->seed(TaskStatusSeeder::class);
+        TaskStatus::factory()->count(10)->create();
         $response = $this->get(route('task_statuses.index'));
 
         $response->assertStatus(200);

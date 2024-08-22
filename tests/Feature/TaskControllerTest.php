@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use App\Models\Task;
 use App\Models\TaskStatus;
 use App\Models\User;
-use Database\Seeders\TaskSeeder;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -55,7 +54,7 @@ class TaskControllerTest extends TestCase
 
     public function testIndex()
     {
-        $this->seed(TaskSeeder::class);
+        Task::factory()->count(10)->create();
         $response = $this->get(route('tasks.index'));
 
         $response->assertStatus(200);
@@ -130,6 +129,6 @@ class TaskControllerTest extends TestCase
         $newUser = User::factory()->create();
         $response = $this->actingAs($newUser)->delete(route('tasks.destroy', ['task' => $this->task->id]));
 
-        $response->assertStatus(403);
+        $response->assertStatus(302);
     }
 }

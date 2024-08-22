@@ -4,20 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\TaskStatusRequest;
 use App\Models\TaskStatus;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Routing\Controller;
 
 class TaskStatusController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth')->except(['index']);
-    }
+    use AuthorizesRequests;
 
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(TaskStatus $taskStatuses)
     {
+        $this->authorize('view', $taskStatuses);
         $taskStatuses = TaskStatus::all();
 
         return view('taskStatuses.index', compact('taskStatuses'));
@@ -28,6 +27,8 @@ class TaskStatusController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', TaskStatus::class);
+
         return view('taskStatuses.create', ['taskStatus' => new TaskStatus()]);
     }
 
@@ -36,6 +37,7 @@ class TaskStatusController extends Controller
      */
     public function store(TaskStatusRequest $request)
     {
+        $this->authorize('create', TaskStatus::class);
         $this->saveTaskStatus(new TaskStatus(), $request);
         flash(__('Статус успешно создан'))->success();
 
@@ -47,6 +49,8 @@ class TaskStatusController extends Controller
      */
     public function edit(TaskStatus $taskStatus)
     {
+        $this->authorize('update', $taskStatus);
+
         return view('taskStatuses.edit', compact('taskStatus'));
     }
 
@@ -55,6 +59,7 @@ class TaskStatusController extends Controller
      */
     public function update(TaskStatusRequest $request, TaskStatus $taskStatus)
     {
+        $this->authorize('update', $taskStatus);
         $this->saveTaskStatus($taskStatus, $request);
         flash(__('Статус успешно изменён'))->success();
 
@@ -66,6 +71,8 @@ class TaskStatusController extends Controller
      */
     public function destroy(TaskStatus $taskStatus)
     {
+        $this->authorize('delete', $taskStatus);
+
         try {
             $taskStatus->delete();
             flash(__('Статус успешно удалён'))->success();

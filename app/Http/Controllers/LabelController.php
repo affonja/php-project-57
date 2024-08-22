@@ -4,22 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LabelRequest;
 use App\Models\Label;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
 class LabelController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth')->except(['index']);
-    }
+    use AuthorizesRequests;
 
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Label $label)
     {
+        $this->authorize('view', $label);
         $labels = Label::all();
+
         return view('labels.index', compact('labels'));
     }
 
@@ -28,7 +28,9 @@ class LabelController extends Controller
      */
     public function create(Request $request)
     {
+        $this->authorize('create', Label::class);
         $backUrl = $request->input('backUrl', route('labels.index'));
+
         return view('labels.create', ['label' => new Label(), 'backUrl' => $backUrl]);
     }
 
@@ -37,9 +39,11 @@ class LabelController extends Controller
      */
     public function store(LabelRequest $request)
     {
+        $this->authorize('create', Label::class);
         $this->saveLabel(new Label(), $request);
         flash('Метка успешно создана')->success();
         $backUrl = $request->input('backUrl', route('labels.index'));
+
         return redirect($backUrl);
     }
 
@@ -48,7 +52,9 @@ class LabelController extends Controller
      */
     public function edit(Label $label, Request $request)
     {
+        $this->authorize('update', $label);
         $backUrl = $request->input('backUrl', route('labels.index'));
+
         return view('labels.edit', ['label' => $label, 'backUrl' => $backUrl]);
     }
 
@@ -57,9 +63,11 @@ class LabelController extends Controller
      */
     public function update(LabelRequest $request, Label $label)
     {
+        $this->authorize('update', $label);
         $this->saveLabel($label, $request);
         flash(__('Метка успешно изменена'))->success();
         $backUrl = $request->input('backUrl', route('labels.index'));
+
         return redirect($backUrl);
     }
 
@@ -68,12 +76,14 @@ class LabelController extends Controller
      */
     public function destroy(Label $label)
     {
+        $this->authorize('delete', $label);
         try {
             $label->delete();
             flash(__('Метка успешно удалена'))->success();
         } catch (\Exception $e) {
             flash(__('Не удалось удалить метку'))->error();
         }
+
         return redirect()->route('labels.index');
     }
 

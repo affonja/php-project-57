@@ -6,7 +6,6 @@ use App\Models\Label;
 use App\Models\Task;
 use App\Models\TaskStatus;
 use App\Models\User;
-use Database\Seeders\LabelSeeder;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
@@ -46,7 +45,7 @@ class LabelControllerTest extends TestCase
 
     public function testIndex()
     {
-        $this->seed(LabelSeeder::class);
+        Label::factory()->count(10)->create();
         $response = $this->get(route('labels.index'));
 
         $response->assertStatus(200);

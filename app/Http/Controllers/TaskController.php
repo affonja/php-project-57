@@ -5,15 +5,17 @@ namespace App\Http\Controllers;
 use App\Http\Requests\TaskRequest;
 use App\Models\Label;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use App\Models\TaskStatus;
 use App\Models\Task;
 use App\Models\User;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Gate;
 
 class TaskController extends Controller
 {
+    use AuthorizesRequests;
+
     protected Collection $taskStatuses;
     protected Collection $users;
     protected Collection $labels;
@@ -23,15 +25,14 @@ class TaskController extends Controller
         $this->taskStatuses = TaskStatus::all();
         $this->users = User::all();
         $this->labels = Label::all();
-        $this->middleware('auth')->except(['index', 'show']);
-        $this->middleware('can:delete,task')->only(['destroy']);
     }
 
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(Request $request, Task $task)
     {
+        $this->authorize('view', $task);
         $filters = $request->input('filter', []);
 
         $tasks = Task::query()
@@ -54,6 +55,8 @@ class TaskController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Task::class);
+
         return view('tasks.create', [
             'task' => new Task(),
             'taskStatuses' => $this->taskStatuses,
@@ -67,27 +70,33 @@ class TaskController extends Controller
      */
     public function store(TaskRequest $request)
     {
+        $this->authorize('create', Task::class);
         $this->saveTask(new Task(), $request, auth()->id());
         flash(__('Задача успешно создана'))->success();
+
         return redirect()->route('tasks.index');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Task $task)
     {
-        $task = Task::findOrFail($id);
+        $this->authorize('view', $task);
+        $task = Task::findOrFail($task->id);
+
         return view('tasks.show', compact('task'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Task $task)
     {
+        $this->authorize('update', $task);
+
         return view('tasks.edit', [
-            'task' => Task::findOrFail($id),
+            'task' => Task::findOrFail($task->id),
             'taskStatuses' => $this->taskStatuses,
             'users' => $this->users,
             'labels' => $this->labels
@@ -99,8 +108,10 @@ class TaskController extends Controller
      */
     public function update(TaskRequest $request, Task $task)
     {
+        $this->authorize('update', $task);
         $this->saveTask($task, $request);
         flash(__('Задача успешно изменена'))->success();
+
         return redirect()->route('tasks.index');
     }
 
@@ -109,7 +120,7 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
-        Gate::authorize('delete', $task);
+        $this->authorize('delete', $task);
 
         try {
             $task->delete();
